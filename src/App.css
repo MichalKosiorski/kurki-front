@@ -1,0 +1,64 @@
+
+
+:root
+{
+  --dark-green: #25671E;
+  --light-green: #48A111;
+  --yellow: #F2B50B;
+  --light: #F7F0F0;
+
+  /*sizes*/
+  
+  --small: 1rem;
+  --medium: 1.5rem;
+  --medium-minus: 1.25rem;
+  --big: 2rem;
+  --big-plus: 2.25rem;
+  --big-minus: 1.75rem;
+  --small-plus: 1.1rem;
+  --small-minus: 0.9rem;
+}
+
+.app-main
+{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+body {
+  background-repeat: repeat;
+  background-size: 80px 80px; 
+  position: relative;
+  background-color: var(--light);
+}
+
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("./assets/kury.png");
+  background-size: 215px 110px;
+  background-repeat: repeat;
+  opacity: 0.2;
+  pointer-events: none;
+  z-index: -1;
+}
+
+body, html
+{
+  margin: 0;
+  padding: 0;
+}
+
+*
+{
+  box-sizing: border-box;
+}
+
+.flex-grow
+{
+  flex-grow: 1;
+}

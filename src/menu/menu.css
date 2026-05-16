@@ -1,0 +1,131 @@
+.menu
+{
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    position: sticky;
+    top: 0px;
+    left: 0px;
+    z-index: 9999;
+    background-color: var(--light);
+    justify-content: space-between;
+    -webkit-box-shadow: -2px 12px 16px -17px rgba(153, 155, 168, 1);
+    -moz-box-shadow: -2px 12px 16px -17px rgba(153, 155, 168, 1);
+    box-shadow: -2px 12px 16px -17px rgba(153, 155, 168, 1);
+    flex-shrink: 0;
+}
+
+.menu-left
+{
+    width: auto;
+    background-color: var(--dark-green);
+    padding: 5px 10px;
+    gap: 10px;
+}
+
+.menu-middle
+{
+    display: flex;
+    gap: 20px;
+    z-index: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-middle-positioner
+{
+    opacity: 0;
+    position: absolute;
+    left: -100% !important;
+    top: 0 !important;
+    z-index: -1;
+}
+
+.menu-right
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 30px;
+    gap: 10px;
+}
+
+.menu-right svg
+{
+    color: var(--dark-green);
+    width: 24px;
+    height: auto;
+    cursor: pointer;
+    display: none;
+}
+
+.menu-left img
+{
+    max-width: 50px;
+}
+
+.menu-middle-upper, .menu-middle-bottom
+{
+    display: none;
+}
+
+
+@media screen and (max-width: 1000px)
+{
+    .menu-middle
+    {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        height: var(--menu-height);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--light);
+        gap: 15px;
+        overflow: hidden;
+        transition: height 0.5s ease-in-out;
+    } 
+    
+    .menu-middle-upper, .menu-middle-bottom
+    {
+        display: block;
+        width: 100%;
+    }
+
+    .menu-middle-upper
+    {
+        height: 20px;
+    }
+
+    .menu-middle-bottom
+    {
+        height: 10px;
+        border-bottom: 2px solid var(--dark-green);
+    }
+
+    .menu-middle span
+    {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .menu-right svg
+    {
+        display: block;
+    }
+
+    .menu-arrow
+    {
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .menu-arrow.rotated
+    {
+        transform: rotate(-180deg);
+    }
+}

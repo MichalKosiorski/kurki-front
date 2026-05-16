@@ -1,0 +1,280 @@
+/*Spacer*/
+.simple-spacer
+{
+    z-index: -1;
+    width: 100%;
+    opacity: 0;
+}
+
+/*Image*/
+.simple-image
+{
+    width: 100%;
+    height: auto;
+}
+
+/*flex centerd*/
+.simple-flex-centered
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/*headers*/
+.simple-header-h1
+{
+    white-space: pre-line;
+    margin: 0;
+    font-size: var(--big);
+}
+
+.simple-header-h2
+{
+    white-space: pre-line;
+    font-size: var(--medium-minus);
+    margin: 0;
+}
+
+.simple-header-h3
+{
+    white-space: pre-line;
+    font-size: var(--small-plus);
+    margin: 0;
+}
+
+
+/*buttons*/
+.simple-button
+{
+    width: fit-content;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    gap: 5px;
+    transition: all 0.3s ease-in-out;
+    font-size: var(--small);
+    cursor: pointer;
+}
+
+.simple-button:hover
+{
+    opacity: 0.9;
+}
+
+.simple-button:disabled
+{
+    opacity: 0.5;
+}
+
+.simple-button-filled
+{
+    background-color: var(--dark-green);
+    color: var(--yellow);
+}
+
+.simple-button-empty
+{
+    border: 1px solid var(--dark-green);
+    color: var(--dark-green);
+    background-color: #00000000;
+}
+
+.simple-paragraph
+{
+    margin: 0;
+    line-height: 1.5;
+}
+
+.simple-link
+{
+    color: var(--dark-green);
+    font-size: var(--small-plus);
+    font-weight: 400;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.simple-link.active
+{
+    text-decoration: underline;
+}
+
+
+/*pretty*/
+.simple-pretty
+{
+    margin-left: var(--margin-left);
+    margin-right: var(--margin-right);
+    width: fit-content;
+    padding: 5px 10px;
+    border-radius: 9999px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--yellow);
+    background-color: var(--light);
+    color: var(--yellow);
+    font-size: var(--small-minus);
+    gap: 10px;
+}
+
+.simple-pretty-image
+{
+    max-width: 30px;
+    height: auto;
+}
+
+
+/*  FAQ     */
+.simple-faq
+{
+    width: 100%;
+    height: auto;
+    border-radius: 24px;
+    border: 2px solid var(--dark-green);
+    background-color: var(--light);
+    padding: 10px 20px;
+    position: relative;
+}
+
+.simple-faq-header
+{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    z-index: 1;
+}
+
+.simple-faq-header svg
+{
+    color: var(--dark-green);
+    width: 25px;
+    height: auto;
+    transition: transform 0.5s ease-in-out;
+    cursor: pointer;
+    display: block;
+}
+
+.simple-faq-content
+{
+    overflow: hidden;
+    z-index: 1;
+    height: 0px;
+    transition: height 0.5s ease-in-out;
+    width: 100%;
+}
+
+.simple-faq-header svg.rotated
+{
+    transform: rotate(-180deg);
+}
+
+.simple-faq-content-positioner
+{
+    position: absolute;
+    z-index: -1 !important;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    height: auto !important;
+}
+
+/*line*/
+.simple-line
+{
+    width: 100%;
+    height: 1px;
+}
+
+/*responsivnes*/
+@media screen and (min-width: 1400px)
+{
+    .simple-spacer
+    {
+        height: var(--spacer-height-pc);
+    }
+
+    .simple-paragraph
+    {
+        text-align: var(--align-pc);
+    }
+
+    .simple-header-h1
+    {
+        text-align: var(--align-pc);;
+    }
+
+    .simple-header-h2
+    {
+        text-align: var(--align-pc);;
+    }
+
+    .simple-header-h3
+    {
+        text-align: var(--align-pc);;
+    }
+}
+
+@media screen and (max-width: 1400px) and (min-width: 800px)
+{
+    .simple-spacer
+    {
+        height: var(--spacer-height-tablet);
+    }
+
+    .simple-paragraph
+    {
+        text-align: var(--align-tablet);
+    }
+
+    .simple-header-h1
+    {
+        text-align: var(--align-tablet);;
+    }
+
+    .simple-header-h2
+    {
+        text-align: var(--align-tablet);;
+    }
+
+    .simple-header-h3
+    {
+        text-align: var(--align-tablet);;
+    }
+}
+
+@media screen and (max-width: 800px)
+{
+    .simple-spacer
+    {
+        height: var(--spacer-height-phone);
+    }
+
+    .simple-paragraph
+    {
+        text-align: var(--align-phone);
+    }
+
+    .simple-header-h1
+    {
+        text-align: var(--align-phone);;
+    }
+
+    .simple-header-h2
+    {
+        text-align: var(--align-phone);;
+    }
+
+    .simple-header-h3
+    {
+        text-align: var(--align-tablet);;
+    }
+}
