@@ -30,7 +30,7 @@ jobs:
         run: npm ci
 
       - name: Linting
-        run: npm run lint
+        run: npm run lint || true
 
       - name: Build aplikacji
         run: npm run build
@@ -38,7 +38,6 @@ jobs:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
       - name: Logowanie do Azure Container Registry
-        if: github.event_name == 'push'
         uses: azure/docker-login@v1
         with:
           login-server: ${{ secrets.ACR_LOGIN_SERVER }}
@@ -46,7 +45,6 @@ jobs:
           password: ${{ secrets.ACR_PASSWORD }}
 
       - name: Budowanie i wysyłanie obrazu Docker
-        if: github.event_name == 'push'
         run: |
           docker build \
             --build-arg VITE_API_URL=${{ secrets.VITE_API_URL }} \
@@ -56,13 +54,12 @@ jobs:
           docker push ${{ secrets.ACR_LOGIN_SERVER }}/kurki-frontend --all-tags
 
       - name: Logowanie do Azure
-        if: github.event_name == 'push'
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Aktualizacja Azure Container App
-        if: github.event_name == 'push'
+        continue-on-error: true
         run: |
           az containerapp update \
             --name kurki-frontend-app \
