@@ -1,0 +1,70 @@
+name: Kurki Frontend CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Pobranie kodu
+        uses: actions/checkout@v4
+
+      - name: Konfiguracja Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Instalacja zależności
+        run: npm ci
+
+      - name: Linting
+        run: npm run lint
+
+      - name: Build aplikacji
+        run: npm run build
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+
+      - name: Logowanie do Azure Container Registry
+        if: github.event_name == 'push'
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Budowanie i wysyłanie obrazu Docker
+        if: github.event_name == 'push'
+        run: |
+          docker build \
+            --build-arg VITE_API_URL=${{ secrets.VITE_API_URL }} \
+            -t ${{ secrets.ACR_LOGIN_SERVER }}/kurki-frontend:${{ github.sha }} \
+            -t ${{ secrets.ACR_LOGIN_SERVER }}/kurki-frontend:latest \
+            .
+          docker push ${{ secrets.ACR_LOGIN_SERVER }}/kurki-frontend --all-tags
+
+      - name: Logowanie do Azure
+        if: github.event_name == 'push'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Aktualizacja Azure Container App
+        if: github.event_name == 'push'
+        run: |
+          az containerapp update \
+            --name kurki-frontend-app \
+            --resource-group kurki-rg \
+            --image ${{ secrets.ACR_LOGIN_SERVER }}/kurki-frontend:${{ github.sha }}
