@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 jobs:
-  build-test-push:
+  build-test-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -46,9 +46,21 @@ jobs:
 
       - name: Budowanie i wysyłanie obrazu Docker
         run: |
-          docker build \
-            --build-arg VITE_API_URL=${{ secrets.VITE_API_URL }} \
-            -t ${{ secrets.ACR_LOGIN_SERVER }}/kurki-frontend:${{ github.sha }} \
-            -t ${{ secrets.ACR_LOGIN_SERVER }}/kurki-frontend:latest \
+          docker build `
+            --build-arg VITE_API_URL=${{ secrets.VITE_API_URL }} `
+            -t ${{ secrets.ACR_LOGIN_SERVER }}/kurki-frontend:${{ github.sha }} `
+            -t ${{ secrets.ACR_LOGIN_SERVER }}/kurki-frontend:latest `
             .
           docker push ${{ secrets.ACR_LOGIN_SERVER }}/kurki-frontend --all-tags
+
+      - name: Logowanie do Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Aktualizacja Azure Container App
+        run: |
+          az containerapp update `
+            --name kurki-frontend-app `
+            --resource-group kurki-rg `
+            --image ${{ secrets.ACR_LOGIN_SERVER }}/kurki-frontend:${{ github.sha }}
