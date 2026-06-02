@@ -129,3 +129,12 @@
         transform: rotate(-180deg);
     }
 }
+
+
+@media screen and (max-width: 500px)
+{
+    .menu-right
+    {
+        padding: 0.1em;
+    }    
+}

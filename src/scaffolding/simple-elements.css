@@ -278,3 +278,42 @@
         text-align: var(--align-tablet);;
     }
 }
+
+
+
+/*-------------------------------
+            INPUT
+--------------------------------*/
+
+.simple-input
+{
+    border: 2px solid var(--yellow);
+    padding: 5px 10px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.simple-input input
+{
+    flex-grow: 1;
+    background-color: #00000000;
+    border: none;
+    outline: none;
+}
+
+.simple-input-left
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.simple-input-left svg
+{
+    color: var(--yellow);
+    width: 20px;
+    height: auto;
+}
