@@ -6,13 +6,15 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { useWindowWidth } from "../utils/useWindowWidth";
 import { AppContext } from "../contexts/AppContext";
 import { useNavigate } from "react-router-dom";
+import { getLocalUser } from "../utils/loginUtils";
 
 
 export function MainMenu({})
 {
     const width = useWindowWidth();
 
-    const {links, user, token} = useContext(AppContext);
+    const {links} = useContext(AppContext);
+    const user_data = getLocalUser();
 
     const navigation_element = [
         {name: links.main.name, link: links.main.link},
@@ -87,8 +89,8 @@ export function MainMenu({})
 
 
             <div className="menu-right">
-                <SimpleButton type="filled" onClick={user ? ()=>{navigate(links.account.link)} : ()=>{navigate(links.login.link)}}>
-                    {user ? links.account.name : links.login.name}
+                <SimpleButton type="filled" onClick={user_data?.token ? ()=>{navigate(links.account.link)} : ()=>{navigate(links.login.link)}}>
+                    {user_data?.token ? links.account.name : links.login.name}
                 </SimpleButton>
                 <SlArrowDown onClick={toggleMenu} className={`menu-arrow ${open ? 'rotated' : ''}`}/>
             </div>

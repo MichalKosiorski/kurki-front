@@ -1,0 +1,19 @@
+.registration-left
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.registration-right
+{
+    position: relative;
+}
+
+.registration-helper
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

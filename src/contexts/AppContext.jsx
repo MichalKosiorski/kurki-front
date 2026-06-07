@@ -6,7 +6,7 @@ export const AppContext = createContext(null);
 export function AppProvider({ children }) 
 {
   const frontend_link = "http://localhost:5173";
-  const api_link = "/powal";
+  const api_link = "https://kurki-backend-app.happywave-0059b994.polandcentral.azurecontainerapps.io";
 
 
   const [user, setUser] = useState(null);
@@ -24,6 +24,7 @@ export function AppProvider({ children })
     "login": {link: "/login", name: "Zaloguj się"},
     "register": {link: "/register", name: "Zarejestruj się"},
     "account": {link: "/account", name: "Moje konto"},
+    "remindPassword" : {link: "/remindPassword", name: "Przypomnij hasło"}
 
   }
 

@@ -3,6 +3,7 @@ import "./simple-elements.css"
 import { useContext, useRef, useState } from "react";
 import { AppContext } from "../contexts/AppContext";
 import { SlArrowDown } from "react-icons/sl";
+import kur from "../assets/kuraczny.png";
 
 export function Spacer({
     height_pc = 10,
@@ -248,3 +249,22 @@ export function SimpleLine({
     return <div className="simple-line" style={{backgroundColor: color}}></div>
 
 }   
+
+
+export function SimpleAbsoluteLoading({
+
+}){
+    return <div className="simple-absolute-loading">
+        <span> Wczytywanie... </span>
+        <img src={kur} alt={"Wczytywanie..."}/>
+    </div>
+}
+
+export function SimpleFixedLoading({
+
+}){
+    return <div className="simple-fixed-loading">
+        <span> Wczytywanie... </span>
+        <img src={kur} alt={"Wczytywanie..."}/>
+    </div>
+}
