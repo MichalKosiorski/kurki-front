@@ -11,7 +11,7 @@ import { checkMailPattern } from "./helpers";
 import { validatePassword } from "./registerPage";
 
 
-export default function ResetPasswordPage(){
+export function ResetPasswordPage(){
 
     //fetch
     const {data, status, loading, error, fetchData} = useFetch({});
