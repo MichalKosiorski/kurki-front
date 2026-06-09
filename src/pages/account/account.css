@@ -1,0 +1,36 @@
+.account-data
+{
+    display: flex;
+    padding: 5px;
+    gap: 20px;
+    font-size: var(--small-plus);
+}
+
+.account-data-header
+{
+    font-weight: 600;
+}
+
+.single-user
+{
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border: 2px solid var(--yellow);
+    border-radius: 15px;
+    padding: 10px;
+    gap: 10px;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.single-user-right
+{
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

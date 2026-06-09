@@ -6,3 +6,57 @@ export function checkMailPattern(mail){
 
     return false;
 }
+
+//checks password
+export function validatePassword(value)
+{
+
+    let response =  {
+        correct: true,
+        message: "Poprawne dane",
+        value: value,
+    }
+
+    if(value.length < 8)
+    {
+        response.correct = false;
+        response.message = "Hasło musi mieć conajmniej 8 znaków";
+        return response;
+    }
+
+    let pattern = /^(?=.*[a-z]).+$/
+    if(!checkRegex(pattern, value)){
+        response.correct = false;
+        response.message = "Hasło musi mieć co najmniej 1 małą literę";
+        return response;
+    }
+
+    pattern = /^(?=.*[A-Z]).+$/
+    if(!checkRegex(pattern, value)){
+        response.correct = false;
+        response.message = "Hasło musi mieć co najmniej 1 wielką literę";
+        return response;
+    }
+
+    pattern = /^(?=.*\d).+$/
+    if(!checkRegex(pattern, value)){
+        response.correct = false;
+        response.message = "Hasło musi mieć co najmniej 1 cyfrę";
+        return response;
+    }
+
+    pattern = /^(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).+$/
+    if(!checkRegex(pattern, value)){
+        response.correct = false;
+        response.message = "Hasło musi mieć co najmniej 1 znak specjalny";
+        return response;
+    }
+    return response;
+}
+
+
+//testing patterns
+function checkRegex(pattern, value)
+{
+    return pattern.test(value);
+}

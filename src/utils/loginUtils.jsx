@@ -13,6 +13,8 @@ export function saveLocalUser(user)
 export function removeLocalUser()
 {
     window.localStorage.removeItem("user");
+    localStorage.removeItem("user-data");
+    localStorage.removeItem("expiresAt");
 }
 
 export function getLocalUser()

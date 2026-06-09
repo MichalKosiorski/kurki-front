@@ -11,8 +11,6 @@ import { getLocalUser } from "../utils/loginUtils";
 
 export function MainMenu({})
 {
-    const width = useWindowWidth();
-
     const {links} = useContext(AppContext);
     const user_data = getLocalUser();
 

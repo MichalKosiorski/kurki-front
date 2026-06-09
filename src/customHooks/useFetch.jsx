@@ -23,6 +23,19 @@ export function useFetch({method='GET', endpoint='', body=null, token=null, auto
             'Content-Type': 'application/json'
         }
         if(usedToken){
+
+            const expiresAt = Number(localStorage.getItem("expiresAt"));
+            const isExpired = !expiresAt || Date.now() >= expiresAt;
+
+            if (isExpired) {
+                localStorage.removeItem("user-data");
+                localStorage.removeItem("user-token");
+                localStorage.removeItem("expiresAt");
+
+                navigate("/login");
+                return;
+            }
+
             headers['Authorization'] = `Bearer ${usedToken}`;
         };
         const options = {
@@ -94,7 +107,22 @@ export function useFetchFormData({method = 'POST', endpoint = '', token = null, 
 
         const headers = {Accept: 'application/json'};
 
-        if (usedToken) {headers['Authorization'] = `Bearer ${usedToken}`;}
+        if (usedToken) {
+            
+            const expiresAt = Number(localStorage.getItem("expiresAt"));
+            const isExpired = !expiresAt || Date.now() >= expiresAt;
+
+            if (isExpired) {
+                localStorage.removeItem("user-data");
+                localStorage.removeItem("user-token");
+                localStorage.removeItem("expiresAt");
+
+                navigate("/login");
+                return;
+            }
+            
+            headers['Authorization'] = `Bearer ${usedToken}`;
+        }
 
         const options = {method: usedMethod, headers, body: formData};
 

@@ -24,7 +24,8 @@ export function AppProvider({ children })
     "login": {link: "/login", name: "Zaloguj się"},
     "register": {link: "/register", name: "Zarejestruj się"},
     "account": {link: "/account", name: "Moje konto"},
-    "remindPassword" : {link: "/remindPassword", name: "Przypomnij hasło"}
+    "remindPassword" : {link: "/remindPassword", name: "Przypomnij hasło"},
+    "kurkAI" : {link: "/kurkai", name: "KurkAI"}
 
   }
 

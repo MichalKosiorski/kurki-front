@@ -1,9 +1,11 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, replace, useLocation, useNavigate } from "react-router-dom";
 import "./simple-elements.css"
 import { useContext, useRef, useState } from "react";
 import { AppContext } from "../contexts/AppContext";
 import { SlArrowDown } from "react-icons/sl";
 import kur from "../assets/kuraczny.png";
+import straz from "../assets/KurzyStrażnik.png"
+import { removeLocalUser } from "../utils/loginUtils";
 
 export function Spacer({
     height_pc = 10,
@@ -90,6 +92,7 @@ export function HeaderH2({
     pc_align = 'left',
     tablet_align = 'left',
     phone_aling = 'left',
+    font_size = "var(--small-plus)"
 })
 {
     return (<h2 className="simple-header-h2" style={{
@@ -98,6 +101,7 @@ export function HeaderH2({
         '--align-pc': pc_align,
         "--align-tablet": tablet_align,
         "--align-phone": phone_aling,
+        fontSize: font_size
         
         }}>
         {text}
@@ -252,11 +256,11 @@ export function SimpleLine({
 
 
 export function SimpleAbsoluteLoading({
-
+    big = true
 }){
     return <div className="simple-absolute-loading">
         <span> Wczytywanie... </span>
-        <img src={kur} alt={"Wczytywanie..."}/>
+        {big && <img src={kur} alt={"Wczytywanie..."}/>}
     </div>
 }
 
@@ -267,4 +271,93 @@ export function SimpleFixedLoading({
         <span> Wczytywanie... </span>
         <img src={kur} alt={"Wczytywanie..."}/>
     </div>
+}
+
+/* PAGINATION */
+export function SimplePagination({
+    current_page = 0,
+    number_of_pages = 0,
+    onPageChange = null
+}){
+    function setPageFun(i)
+    {
+        if(onPageChange)
+            onPageChange(i);
+    }
+
+    const mode = number_of_pages > 12 ? "big" : "small";
+
+
+    return (
+        <div className="simple-navigation">
+            {mode == "small" && Array.from({ length: number_of_pages }, (_, i) => i + 1).map(number => (
+                <button key={number} onClick={()=>{setPageFun(number)}} className={`simple-pagination-button ${current_page == number ? "active" : ""}`}>{number}</button>
+            ))}
+            {mode == "big" && <>
+                {/* LEFT SIDE */}
+                {Array.from({ length: 3}, (_, i) => i + 1).map(number => (
+                    <button key={number} onClick={()=>{setPageFun(number)}} className={`simple-pagination-button ${current_page == number ? "active" : ""}`}>{number}</button>
+                ))}
+
+                {current_page > 4 && <>
+                    <span>...</span>
+                    <input onChange={(e)=>{setPageFun(e.target.value)}} min={0} max={number_of_pages}  className="basic-input" type="number"/>
+                    <span>...</span>
+                </>}
+                {current_page > 3 && current_page < number_of_pages - 3  && <button className={`simple-pagination-button active`}>{current_page}</button>}
+                
+                {current_page < number_of_pages - 4 && <>
+                    <span>...</span>
+                    <input onChange={(e)=>{setPageFun(e.target.value)}} min={0} max={number_of_pages} className="basic-input" type="number"/>
+                    <span>...</span>
+                </>}
+                {Array.from({ length: 3}, (_, i) => i + (number_of_pages-2)).map(number => (
+                    <button key={number} onClick={()=>{setPageFun(number)}} className={`simple-pagination-button ${current_page == number ? "active" : ""}`}>{number}</button>
+                ))}
+            
+            
+            </>}
+        </div>
+    )
+}
+
+//ban
+export function SimpleBanInfo()
+{
+
+    const navigate = useNavigate();
+    
+    function handleLogOut(){
+
+        removeLocalUser();
+        navigate("/", {replace: true});
+
+    }
+
+    return (
+    <div style={{
+        position: "fixed",
+        top: "0",
+        left: "0",
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "10px",
+        flexDirection: "column",
+        backgroundColor: "rgba(0,0,0,0.9)",
+        zIndex: "10100101"
+    }}
+    >
+        <HeaderH2 pc_align="center" phone_aling="center" tablet_align="center" 
+            font_size="var(--big)"
+            color={"var(--yellow)"}
+            font_weight={"900"}
+        text={"No i twoje konto zostało zbanowane gagatku. Było tak szaleć?"}/>
+        <Spacer height_pc={25}/>
+        <img src={straz} alt="gagatek" style={{width: "100px", height: "auto"}}/>
+        <Spacer height_pc={25}/>
+        <SimpleButton type="filled" onClick={handleLogOut}> Wyloguj </SimpleButton>
+    </div>);
 }

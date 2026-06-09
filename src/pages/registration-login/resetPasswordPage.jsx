@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { HeaderH1, SimpleAbsoluteLoading, SimpleButton, SimpleFixedLoading, SimpleLink, SimpleParagraph, Spacer } from "../../scaffolding/simple-elements";
-import { SimpleDigitInput, SimpleInput, SimpleLabel } from "../../scaffolding/simple-form-elements";
+import { SimpleDigitInput, SimpleError, SimpleInput, SimpleLabel } from "../../scaffolding/simple-form-elements";
 import "./registration.css"
 import { RiMailLine, RiLock2Line  } from "react-icons/ri";
 import { useFetch } from "../../customHooks/useFetch";
@@ -8,7 +8,7 @@ import { AppContext } from "../../contexts/AppContext";
 import { useContext } from "react";
 import { replace, useNavigate, useSearchParams } from "react-router-dom";
 import { checkMailPattern } from "./helpers";
-import { validatePassword } from "./registerPage";
+import { validatePassword } from "./helpers";
 
 
 export function ResetPasswordPage(){
@@ -294,10 +294,7 @@ export function ResetPasswordPage(){
                 </>}
                 <Spacer height_pc={30}/>
                 <SimpleButton style={{width: "100%"}} type="filled" onClick={handleChange}> Zmień hasło </SimpleButton>
-                {errorReset && <>
-                    <Spacer height_pc={5}/>
-                    <SimpleParagraph color="var(--error)" text={"Wygląda na to, że coś poszło nie tak... Sprawdź poprawność wpisanych danych"}/>
-                </>}
+                {errorReset &&  <SimpleError errorData={errorReset}/>}
             </div>
         </div>}
         <Spacer height_pc={160}/>

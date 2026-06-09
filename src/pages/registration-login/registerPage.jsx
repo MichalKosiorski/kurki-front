@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { HeaderH1, SimpleAbsoluteLoading, SimpleButton, SimpleLink, SimpleParagraph, Spacer } from "../../scaffolding/simple-elements";
-import { SimpleInput, SimpleLabel } from "../../scaffolding/simple-form-elements";
+import { SimpleError, SimpleInput, SimpleLabel } from "../../scaffolding/simple-form-elements";
 import "./registration.css"
 import { RiMailLine, RiLock2Line, RiPhoneLine,RiUser3Line, RiCalendar2Line } from "react-icons/ri";
 import { useFetch } from "../../customHooks/useFetch";
@@ -8,62 +8,7 @@ import { AppContext } from "../../contexts/AppContext";
 import { useContext } from "react";
 import { replace, useNavigate } from "react-router-dom";
 import kur from "../../assets/kuraczny.png"
-
-
-//checks password
-export function validatePassword(value)
-{
-
-    let response =  {
-        correct: true,
-        message: "Poprawne dane",
-        value: value,
-    }
-
-    if(value.length < 8)
-    {
-        response.correct = false;
-        response.message = "Hasło musi mieć conajmniej 8 znaków";
-        return response;
-    }
-
-    let pattern = /^(?=.*[a-z]).+$/
-    if(!checkRegex(pattern, value)){
-        response.correct = false;
-        response.message = "Hasło musi mieć co najmniej 1 małą literę";
-        return response;
-    }
-
-    pattern = /^(?=.*[A-Z]).+$/
-    if(!checkRegex(pattern, value)){
-        response.correct = false;
-        response.message = "Hasło musi mieć co najmniej 1 wielką literę";
-        return response;
-    }
-
-    pattern = /^(?=.*\d).+$/
-    if(!checkRegex(pattern, value)){
-        response.correct = false;
-        response.message = "Hasło musi mieć co najmniej 1 cyfrę";
-        return response;
-    }
-
-    pattern = /^(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).+$/
-    if(!checkRegex(pattern, value)){
-        response.correct = false;
-        response.message = "Hasło musi mieć co najmniej 1 znak specjalny";
-        return response;
-    }
-    return response;
-}
-
-
-//testing patterns
-export function checkRegex(pattern, value)
-{
-    return pattern.test(value);
-}
-
+import { validatePassword } from "./helpers";
 
 
 export default function RegisterPage(){
@@ -225,10 +170,6 @@ export default function RegisterPage(){
         if(status == 'success'){
             navigate(`/verifyEmail?email=${encodeURIComponent(emailValue.trim())}`);
         }
-
-        console.log(error);
-        console.log(error?.message);
-        console.log(error?.message?.details);
     },[data, error, status, loading])
 
     return <main>
@@ -312,12 +253,7 @@ export default function RegisterPage(){
                     <span style={{fontSize: "var(--small-plus)"}}> Masz już konto? <SimpleLink text={"Zaloguj sie!"} link={links.login.link}/></span>
                     
                 </div>
-                {error && <>
-                    <Spacer height_pc={10}/>
-                    <SimpleParagraph color="var(--error)" text={
-                        error?.message == "Failed to fetch" ? "Brak połączenia z serwerem" : "Niepoprawne dane rejestracji. Być może nazwa użytkownika lub email są już zajęte... kto wie?"
-                    }/>
-                </>}
+                {error && <SimpleError errorData={error}/>}
 
 
             </div>

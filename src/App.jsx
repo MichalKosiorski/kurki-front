@@ -13,6 +13,10 @@ import RegisterPage from './pages/registration-login/registerPage'
 import VerifyMailPage from './pages/registration-login/verifyMail'
 import { SuccessPage } from './pages/registration-login/successPage'
 import { ResetPasswordPage } from './pages/registration-login/resetPasswordPage'
+import { NotFoundPage } from './pages/additional/NotFoundPage'
+import { EncyclopedyPage } from './pages/encyclopedy/encyclopedyPage'
+import { KurkAI } from './pages/KurkAI/KurkAI'
+import { PostsPage } from './pages/posts/postsPage'
 
 function App() {
 
@@ -32,6 +36,10 @@ function App() {
         <Route path="/success" element={<AlreadyLoggedInRedirect><SuccessPage/></AlreadyLoggedInRedirect>} />
         <Route path='/account' element={<RequireAuth><AccountPage/></RequireAuth>}/>
         <Route path='/register' element={<AlreadyLoggedInRedirect><RegisterPage/></AlreadyLoggedInRedirect>}/>
+        <Route path='/encyclopedy' element={<RequireAuth><EncyclopedyPage/></RequireAuth>}/>
+        <Route path='/kurkai' element={<RequireAuth><KurkAI/></RequireAuth>}/>
+        <Route path='/posts' element={<RequireAuth><PostsPage/></RequireAuth>}/>
+        <Route path='*' element={<NotFoundPage/>}/>
       </Routes>
       
       <ThemeFooter />

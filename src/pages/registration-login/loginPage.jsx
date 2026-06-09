@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { HeaderH1, SimpleAbsoluteLoading, SimpleButton, SimpleLink, SimpleParagraph, Spacer } from "../../scaffolding/simple-elements";
-import { SimpleInput, SimpleLabel } from "../../scaffolding/simple-form-elements";
+import { SimpleError, SimpleInput, SimpleLabel } from "../../scaffolding/simple-form-elements";
 import "./registration.css"
 import { RiMailLine, RiLock2Line  } from "react-icons/ri";
 import { useFetch } from "../../customHooks/useFetch";
@@ -13,6 +13,7 @@ export default function LoginPage(){
 
     //fetch
     const {data, status, loading, error, fetchData} = useFetch({});
+    const {data: dataGetMe, status: statusGetMe, loading: loadingGetMe, error: errorGetMe, fetchData: fetchDataGetMe} = useFetch({});
 
     //links
     const {links} = useContext(AppContext);
@@ -35,6 +36,9 @@ export default function LoginPage(){
     //errors
     const [emailError, setEmailError] = useState(null);
     const [passwordError, setPasswordError] = useState(null);
+
+    const [savedToken, setSavedToken] = useState(null);
+    const [expiringDate, setExpiringDate] = useState(null);
 
     function goToPassword()
     {
@@ -80,8 +84,20 @@ export default function LoginPage(){
     //if success go to account page
     useEffect(()=>{
         if(status == 'success'){
-            navigate(links.account.link, {replace: true})
-            window.localStorage.setItem("user", JSON.stringify(data));
+            
+
+            //for saving
+            setSavedToken(data);
+
+            let expiresIn = data.expiresIn;
+            //calculating expiration date, 2000 is some offset to handle time of getting this from backend
+            //idk if this is good practice, i just had this idea
+            let expiresAt = Date.now() + expiresIn - 2000;
+            setExpiringDate(expiresAt);
+            window.localStorage.setItem("expiresAt", expiresAt.toString());
+
+            //starting new fetch to get user data
+            fetchDataGetMe("GET", "/users/me", null, data.token);
         }
     },[data, error, status, loading])
 
@@ -94,6 +110,17 @@ export default function LoginPage(){
 
     },[])
 
+    useEffect(()=>{
+
+        if(statusGetMe == "success"){
+            //saving data
+            window.localStorage.setItem("user", JSON.stringify(savedToken));
+            window.localStorage.setItem("user-data", JSON.stringify(dataGetMe));
+            navigate(links.account.link, {replace: true})
+        }
+
+    },[dataGetMe, loadingGetMe, statusGetMe, errorGetMe])
+
     return <main>
         <Spacer height_pc={100}/>
         <div className="grid-1-1">
@@ -105,7 +132,7 @@ export default function LoginPage(){
                 <Spacer height_pc={20}/>
             </div>
             <div className="registration-right">
-                {loading && <SimpleAbsoluteLoading/>}
+                {(loading || loadingGetMe) && <SimpleAbsoluteLoading/>}
                 <SimpleLabel forWho="email-field" text={"Email* :"}/>
                 <Spacer height_pc={10}/>
                 <SimpleInput id_param={"email-field"} value={emailValue} onChange={setEmailValue} name="email-field" type={"text"} ref={loginRef} onEnter={goToPassword} onDown={goToPassword} svg={<RiMailLine/>} placeholder="Podaj email"/>
@@ -136,10 +163,8 @@ export default function LoginPage(){
                     <span style={{fontSize: "var(--small-plus)"}}> Nie masz konta? <SimpleLink text={"Zarejestruj sie!"} link={links.register.link}/></span>
                     
                 </div>
-                {error && <>
-                    <Spacer height_pc={10}/>
-                    <SimpleParagraph color="var(--error)" text={"Niepoprawne dane logowania"}/>
-                </>}
+                {error &&  <SimpleError errorData={error}/>}
+                {errorGetMe &&  <SimpleError errorData={errorGetMe}/>}
 
 
             </div>

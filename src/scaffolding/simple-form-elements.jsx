@@ -5,6 +5,7 @@ import jajo_out from "../assets/jajo_outside.png";
 
 import { forwardRef, useState } from "react";
 import "./simple-elements.css";
+import { SimpleParagraph, Spacer } from "./simple-elements";
 
 
 /*  -----------------------
@@ -139,6 +140,60 @@ export const SimpleDigitInput = forwardRef(function DigitInput(
                 inputMode="numeric"
                 value={value}
                 onChange={(e) => handleChange(e.target.value)}
+                onKeyDown={handleKeyDown}
+            />
+        </div>
+    );
+});
+
+
+
+//Error
+export function SimpleError({errorData}){
+
+    return <>
+        <Spacer height_pc={10}/>
+        <SimpleParagraph color="var(--error)" text={errorData?.details?.message ?? "Ups... Wygląda na to, że coś poszło nie tak..."}/>
+    </>
+}
+
+//textarea
+export const SimpleTextarea = forwardRef(function SimpleTextarea(
+    {
+        onEnter = null,
+        onChange = null,
+        value = "",
+        placeholder = "",
+        add_class = "",
+        id_param = "",
+        name = "",
+        maxLength = undefined,
+        rows = 4
+    },
+    ref
+) {
+
+    function handleOnChange(v) {
+        if (onChange) onChange(v);
+    }
+
+    function handleKeyDown(e) {
+        if (e.key === "Enter" && onEnter) {
+            onEnter(e.target.value);
+        }
+    }
+
+    return (
+        <div className={`simple-input simple-textarea ${add_class}`}>
+            <textarea
+                ref={ref}
+                id={id_param}
+                name={name}
+                placeholder={placeholder}
+                value={value}
+                rows={rows}
+                maxLength={maxLength}
+                onChange={(e) => handleOnChange(e.target.value)}
                 onKeyDown={handleKeyDown}
             />
         </div>

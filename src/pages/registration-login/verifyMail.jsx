@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { HeaderH1, SimpleAbsoluteLoading, SimpleButton, SimpleFixedLoading, SimpleLink, SimpleParagraph, Spacer } from "../../scaffolding/simple-elements";
-import { SimpleDigitInput, SimpleInput, SimpleLabel } from "../../scaffolding/simple-form-elements";
+import { SimpleDigitInput, SimpleError, SimpleInput, SimpleLabel } from "../../scaffolding/simple-form-elements";
 import "./registration.css"
 import { RiMailLine, RiLock2Line  } from "react-icons/ri";
 import { useFetch } from "../../customHooks/useFetch";
@@ -21,9 +21,6 @@ export default function VerifyMailPage(){
     //fetch
     const {data, status, loading, error, fetchData} = useFetch({});
     const {data: dataVerify, status: statusVerify, loading: loadingVerify, error: errorVerify, fetchData: fetchDataVerify} = useFetch({});
-
-    //links
-    const {links} = useContext(AppContext);
 
     //navigation
     const navigate = useNavigate()
@@ -225,10 +222,7 @@ export default function VerifyMailPage(){
                     <SimpleParagraph text="Kod nie dotarł na Twój adres?" pc_align="center" phone_aling="center" tablet_align="center"/>
                     <Spacer height_pc={10}/>
                     <SimpleButton type="filled" onClick={handleResend}>Wyślij ponownie</SimpleButton>
-                    {status == "error" && <>
-                        <Spacer height_pc={15}/>
-                        <SimpleParagraph color="var(--error)" text={"Coś poszło nie tak... Być może podany został zły email... Któż to może wiedzieć?"}/>
-                    </>}
+                    {error &&  <SimpleError errorData={error}/>}
                     
                     {status == "success" && <>
                         <Spacer height_pc={15}/>
@@ -281,13 +275,7 @@ export default function VerifyMailPage(){
                 </>}
                 <Spacer height_pc={30}/>
                 <SimpleButton style={{width: "100%"}} type="filled" onClick={handleSubmit}> Zweryfikuj </SimpleButton>
-                {errorVerify && <>
-                    <Spacer height_pc={5}/>
-                    <SimpleParagraph color="var(--error)" text={
-                        dataVerify?.message == "Account verified successfully" ? "To konto jest już zweryfikowane" :
-                        "Wygląda na to, że coś poszło nie tak... Być może kod jest zły?"
-                        }/>
-                </>}
+                {errorVerify && <SimpleError errorData={errorVerify}/>}
 
             </div>
         </div>

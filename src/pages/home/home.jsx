@@ -24,7 +24,7 @@ export default function HomePage()
         {/* TOP */}
         <Pretty text={"Kurki polecają!"}/>
         <Spacer height_pc={20}/>
-        <HeaderH1 
+        <HeaderH1
             color={'var(--dark-green)'}
             text={"Wszystko o kurkach w jednym miejscu"}
             font_weight={800} pc_align="center"
@@ -49,7 +49,7 @@ export default function HomePage()
         </div>
         <Spacer height_pc={10} height_phone={30}/>
         <div className="buttons-space">
-            <SimpleButton type="empty"> Zobacz swoje konto </SimpleButton>
+            <SimpleButton type="empty" onClick={()=>{goTo("/account")}}> Zobacz swoje konto </SimpleButton>
             <SimpleButton type="filled"> Dowiedz się więcej </SimpleButton>
         </div>
         <Spacer height_pc={150}/>
@@ -58,12 +58,13 @@ export default function HomePage()
         {/* STEPS */}
         <Pretty text={"Bardzo proste!"}/>
         <Spacer height_pc={20}/>
-        <HeaderH1 
+        <HeaderH2
             color={'var(--dark-green)'}
             text={"To wszystko jest naprawdę proste"}
             font_weight={800} pc_align="center"
             phone_aling="center"
-            tablet_align="center"/>
+            tablet_align="center"
+            font_size="var(--big)"/>
         <Spacer height_pc={24}/>
         <SimpleParagraph text="Wystrzczy tylko kilka kroków by pełnia naszej strony stanęła przed Tobą otworem" pc_align="center" tablet_align="center" phone_aling="center"/>
         <Spacer height_pc={60}/>
@@ -109,12 +110,13 @@ export default function HomePage()
         {/* Functionality */}
         <Pretty text={"Wiele możliwości!"}/>
         <Spacer height_pc={20}/>
-        <HeaderH1 
+        <HeaderH2 
             color={'var(--dark-green)'}
             text={"Zobacz co dla Ciebie przygotowaliśmy!"}
             font_weight={800} pc_align="center"
             phone_aling="center"
-            tablet_align="center"/>
+            tablet_align="center"
+            font_size="var(--big)"/>
         <Spacer height_pc={24}/>
         <SimpleParagraph text="Odkryj możliwości naszej wspaniałej strony" pc_align="center" tablet_align="center" phone_aling="center"/>
         <Spacer height_pc={40}/>
@@ -152,7 +154,7 @@ export default function HomePage()
                 <SimpleParagraph text=" Stawiamy na nowocześność! Kurki są teraz AI-powered! Dołączyliśmy do naszej strony najnowszego niesamowitego kurzego chatBota. Niekończące się godziny rozmów na wszelkie tematy kurze wraz z naszą Sztuczną Inteligencją. Poznaj KurkAIa i pełnię jego możliwości." 
                     pc_align="justify" tablet_align="justify" phone_aling="justify"/>
                 <div style={{flexGrow: 1}}></div>
-                <SimpleButton onClick={()=>{goTo(links.encyclopedy.link)}}> Otwórz KurkAIa</SimpleButton>
+                <SimpleButton onClick={()=>{goTo(links.kurkAI.link)}}> Otwórz KurkAIa</SimpleButton>
                 <Spacer height_pc={5}/>
             </div>
         </div>
@@ -165,12 +167,13 @@ export default function HomePage()
         <Spacer height_pc={150}/>
 
         {/* FAQ */}
-        <HeaderH1 
+        <HeaderH2 
             color={'var(--dark-green)'}
             text={"Najczęstsze pytania"}
             font_weight={800} pc_align="center"
             phone_aling="center"
-            tablet_align="center"/>
+            tablet_align="center"
+            font_size="var(--big)"/>
         <Spacer height_pc={24}/>
         <SimpleFaq title="Jak można dodać wpis na forum?">
             <SimpleParagraph pc_align="justify" tablet_align="justify" phone_aling="justify"
