@@ -6,7 +6,8 @@ export const AppContext = createContext(null);
 export function AppProvider({ children }) 
 {
   const frontend_link = "http://localhost:5173";
-  const api_link = "https://kurki-backend-app.happywave-0059b994.polandcentral.azurecontainerapps.io";
+  const api_link = import.meta.env.VITE_API_URL;
+  //const api_link = "https://kurki-backend-app.happywave-0059b994.polandcentral.azurecontainerapps.io";
 
 
   const [user, setUser] = useState(null);
