@@ -11,22 +11,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get branch name
-        id: branch
+      - name: Set branch name
         run: echo "BRANCH=${{ github.event.pull_request.head.ref }}" >> $GITHUB_ENV
 
-      - name: Get deployments list
-        id: deployments
+      - name: Get deployments from Cloudflare
         run: |
-          curl -X GET "https://api.cloudflare.com/client/v4/accounts/${{ secrets.CF_ACCOUNT_ID }}/pages/projects/${{ secrets.CF_PROJECT_NAME }}/deployments" \
+          curl -s -X GET "https://api.cloudflare.com/client/v4/accounts/${{ secrets.CF_ACCOUNT_ID }}/pages/projects/${{ secrets.CF_PROJECT_NAME }}/deployments" \
           -H "Authorization: Bearer ${{ secrets.CF_API_TOKEN }}" \
           -H "Content-Type: application/json" \
           -o deployments.json
 
-      - name: Extract deployment ID for branch
-        id: extract
+      - name: Debug deployments (preview only)
         run: |
-          DEPLOYMENT_ID=$(jq -r --arg BRANCH "$BRANCH" '.result[] | select(.deployment_trigger.metadata.branch==$BRANCH and .environment=="preview") | .id' deployments.json | head -n 1)
+          cat deployments.json | jq '.result[] | select(.environment=="preview") | {id, environment, branch: .deployment_trigger.metadata.branch}'
+
+      - name: Extract deployment ID for this branch
+        run: |
+          DEPLOYMENT_ID=$(cat deployments.json | jq -r --arg BRANCH "$BRANCH" '
+            .result[]
+            | select(.environment=="preview")
+            | select(.deployment_trigger.metadata.branch==$BRANCH)
+            | .id
+          ' | head -n 1)
+
+          echo "Found deployment: $DEPLOYMENT_ID"
+
+          if [ -z "$DEPLOYMENT_ID" ]; then
+            echo "No matching preview deployment found."
+            exit 0
+          fi
+
           echo "DEPLOYMENT_ID=$DEPLOYMENT_ID" >> $GITHUB_ENV
 
       - name: Delete preview deployment
