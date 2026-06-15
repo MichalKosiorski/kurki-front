@@ -1,0 +1,36 @@
+name: Delete Cloudflare Preview on PR Merge
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  delete-preview:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get branch name
+        id: branch
+        run: echo "BRANCH=${{ github.event.pull_request.head.ref }}" >> $GITHUB_ENV
+
+      - name: Get deployments list
+        id: deployments
+        run: |
+          curl -X GET "https://api.cloudflare.com/client/v4/accounts/${{ secrets.CF_ACCOUNT_ID }}/pages/projects/${{ secrets.CF_PROJECT_NAME }}/deployments" \
+          -H "Authorization: Bearer ${{ secrets.CF_API_TOKEN }}" \
+          -H "Content-Type: application/json" \
+          -o deployments.json
+
+      - name: Extract deployment ID for branch
+        id: extract
+        run: |
+          DEPLOYMENT_ID=$(jq -r --arg BRANCH "$BRANCH" '.result[] | select(.deployment_trigger.metadata.branch==$BRANCH and .environment=="preview") | .id' deployments.json | head -n 1)
+          echo "DEPLOYMENT_ID=$DEPLOYMENT_ID" >> $GITHUB_ENV
+
+      - name: Delete preview deployment
+        if: env.DEPLOYMENT_ID != ''
+        run: |
+          curl -X DELETE "https://api.cloudflare.com/client/v4/accounts/${{ secrets.CF_ACCOUNT_ID }}/pages/projects/${{ secrets.CF_PROJECT_NAME }}/deployments/${{ env.DEPLOYMENT_ID }}" \
+          -H "Authorization: Bearer ${{ secrets.CF_API_TOKEN }}"
